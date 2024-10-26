@@ -1,5 +1,6 @@
 package zerox06.vertical.bobbing.mixin;
 
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,8 +17,8 @@ import zerox06.vertical.bobbing.imixin.IPlayerEntityExtension;
 public class GameRendererMixin {
 
     @Inject(method = "bobView", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bobView(MatrixStack matrices, float tickDelta, CallbackInfo ci, PlayerEntity playerEntity, float f, float g, float h) {
-        IPlayerEntityExtension playerExtension = (IPlayerEntityExtension) playerEntity;
+    private void bobView(MatrixStack matrices, float tickDelta, CallbackInfo ci, AbstractClientPlayerEntity abstractClientPlayerEntity, float f, float g, float h) {
+        IPlayerEntityExtension playerExtension = (IPlayerEntityExtension) abstractClientPlayerEntity;
         float i = MathHelper.lerp(tickDelta, playerExtension.getLastVerticalSpeed(), playerExtension.getVerticalSpeed());
         i = (i * 0.5f) - i;
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(i * 5f));
